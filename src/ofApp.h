@@ -25,6 +25,11 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
+
+    void remplirFace(ofRectangle face,ofColor color);
+
+    void initCube();
+
     //taille texture
     int32_t texture_width;
     int32_t texture_height;
@@ -45,5 +50,14 @@ public:
     //unsigned char texture_buffer[1024*1024*4];
     ofPixels texture_buffer;
     ofTexture texture;
+
+
+    //variable positionnement face du cube
+    ofRectangle front;
+    ofRectangle back;
+    ofRectangle top;
+    ofRectangle left;
+    ofRectangle right;
+
 
 };
