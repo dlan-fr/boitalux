@@ -1,0 +1,76 @@
+// Splash configuration file
+// Exported with Blender Splash add-on
+{
+    "description" : "splashConfiguration",
+    "world" : {
+        "framerate" : 60
+    },
+    "scenes" : [
+        {
+            "name" : "GPU",
+            "display" : 0,
+            "swapInterval" : 1
+        }
+    ],
+    "GPU" : {
+        "BackCam" : {
+            "type" : "camera",
+            "size" : [840, 1050],
+            "principalPoint" : [0.5, 0.5],
+            "fov" : 28.841546110078532,
+            "eye" : [-5.354433536529541, 5.6805949211120605, 4.533051490783691],
+            "target" : [-4.822691440582275, 5.0805583000183105, 4.134352207183838],
+            "up" : [0.1315256655216217, -0.14841824769973755, 0.3987818956375122]
+        },
+        "Gui window" : {
+            "decorated" : 1,
+            "type" : "window",
+            "size" : [732, 932],
+            "position" : [0.0, 0.0]
+        },
+        "Object" : {
+            "type" : "object",
+            "sideness" : 0,
+            "color" : [1.0, 1.0, 1.0, 1.0]
+        },
+        "FrontCam" : {
+            "type" : "camera",
+            "size" : [840, 1050],
+            "principalPoint" : [0.5, 0.5],
+            "fov" : 28.841546110078532,
+            "eye" : [5.994329452514648, -5.219078063964844, 5.34366512298584],
+            "target" : [5.342771053314209, -4.604907512664795, 4.898393630981445],
+            "up" : [-0.32401347160339355, 0.305420845746994, 0.8953956365585327]
+        },
+        "Image" : {
+            "flop" : 0,
+            "type" : "image_shmdata",
+            "file" : "socket",
+            "srgb" : 1,
+            "flip" : 0
+        },
+        "Mesh" : {
+            "type" : "mesh",
+            "file" : "splash_Cube.obj"
+        },
+        "Window" : {
+            "decorated" : 0,
+            "type" : "window",
+            "size" : [1680, 1050],
+            "layout" : [0, 1],
+            "srgb" : 1,
+            "position" : [1920, 0],
+            "fullscreen" : -1
+        },
+        "links" : [
+            ["Gui window", "GPU"],
+            ["Window", "GPU"],
+            ["FrontCam", "Window"],
+            ["Object", "FrontCam"],
+            ["Mesh", "Object"],
+            ["Image", "Object"],
+            ["BackCam", "Window"],
+            ["Object", "BackCam"]
+        ]
+    }
+}
