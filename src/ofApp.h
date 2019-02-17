@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "enum.h"
 #include <inttypes.h>
 #include "shmdata/cwriter.h"
 
@@ -27,12 +28,23 @@ public:
 
 
     void remplirFace(ofRectangle face,ofColor color);
+    void majFaceDepuisGrille(ofRectangle face,FaceIndex index, FillOrient orient);
 
     void initCube();
 
     //taille texture
     int32_t texture_width;
     int32_t texture_height;
+
+    //valeurs grilles
+
+    //nombre de carré pour un coté d'une face du cube
+    uint32_t div_grille;
+    uint32_t total_face_grille;
+    uint32_t total_grille;
+
+    //contient la couleur de chaque carré des face du cube
+    vector<ofColor> grille;
 
     //taille fenêtre
     int32_t appwidth;
