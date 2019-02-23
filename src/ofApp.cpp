@@ -33,78 +33,72 @@ void ofApp::remplirFace(ofRectangle face,ofColor color) {
 
 }
 
-void ofApp::majFaceDepuisGrille(ofRectangle face,FaceIndex index,FillOrient orient) {
+ofColor ofApp::pickColor(float x,float y,uint32_t start_index,ofRectangle face,FillOrient orient) {
+    uint32_t col = 0;
+    uint32_t row = 0;
 
-    uint32_t start_index = index * (div_grille * div_grille);
-    uint32_t end_index = start_index + (div_grille * div_grille);
-
-    uint32_t ilocalgrille = 0;
-
-    //nombre de pixel de coté pour une cellule
-    uint32_t pix_cellulex = face.width / div_grille;
-    uint32_t pix_celluley = face.height / div_grille;
-
-    float xcurs = 0;
-    float ycurs = 0;
+    uint32_t colpix = (face.width / div_grille);
+    uint32_t rowpix = (face.height / div_grille);
 
     switch(orient) {
         case FillOrient::horz:
-            xcurs = face.x;
-            ycurs = face.y;
+         col = x / colpix;
+         row = y / rowpix;
         break;
         case FillOrient::vertinvert:
-            xcurs = face.x + face.width;
-            ycurs = face.y;
+        {
+            col = div_grille - (x / colpix);
+            row = (y / rowpix);
+
+            uint32_t tmpcol = col;
+            col = row;
+            row = tmpcol;
+        }
+
+
         break;
         case FillOrient::horzinvert:
+        col = div_grille - (x / colpix);
+        row = div_grille - (y / rowpix);
             break;
         case FillOrient::vert:
         break;
 
     }
 
-    uint32_t i_grille = start_index;
+
+    if(row == div_grille) {
+        row = div_grille - 1;
+    }
+
+    if(col == div_grille) {
+        col = div_grille - 1;
+    }
+
+    uint32_t igrid = (start_index)  + ((row * div_grille)+ col);
 
 
-    //remplissage ligne à ligne
-    for(uint32_t row = 0;row < div_grille;row++) {
-
-        for(uint32_t col = 0;col < div_grille;col++) {
-
-            //remplissage de tout les pixels d'une cellule
-            if(orient == FillOrient::horz) {
-                for(float y = ycurs;y < ycurs + pix_celluley;y++) {
-                    for(float x = xcurs;x < xcurs + pix_cellulex;x++) {
-                        texture_buffer.setColor(x,y,grille[i_grille]);
-                    }
-                }
+    return grille[igrid];
 
 
-                xcurs += pix_cellulex;
-            }
-            else if(orient == FillOrient::vertinvert) {
-                 for(float x = xcurs;x > xcurs - pix_cellulex;x--) {
-                    for(float y = ycurs;y < ycurs + pix_celluley;y++) {
-                        texture_buffer.setColor(x,y,grille[i_grille]);
-                    }
-                }
+}
 
-                ycurs += pix_celluley;
-            }
-        //passage à la colonne suivante
-           i_grille++;
+void ofApp::majFaceDepuisGrille(ofRectangle face,FaceIndex index,FillOrient orient) {
 
+    uint32_t start_index = index * (div_grille * div_grille);
+    float xrel = 0;
+    float yrel = 0;
+
+    for(float y = face.y;y < face.y + face.height;y++) {
+        xrel = 0;
+        for(float x =face.x; x < face.x + face.width;x++) {
+            ofColor color = this->pickColor(xrel,yrel,start_index,face,orient);
+            texture_buffer.setColor(x,y,color);
+            xrel++;
         }
 
-        if(orient == FillOrient::horz) {
-            //passage à la ligne suivante
-            ycurs += pix_celluley;
-            xcurs = face.x;
-        }
-        else if(orient == FillOrient::vertinvert) {
-            ycurs = face.y;
-            xcurs -= pix_cellulex;
-        }
+        yrel++;
+
     }
 
 }
@@ -180,25 +174,43 @@ void ofApp::setup(){
     }
 
 
-    uint32_t igr = total_face_grille * 2;
+    uint32_t igr = 0;//total_face_grille * 2;
     ofColor testcol = ofColor::blue;
 
-    for(uint32_t rtest = 0;rtest < div_grille;rtest++) {
-        for(uint32_t ctest = 0;ctest < div_grille;ctest++) {
-            grille[igr++].set(testcol.r,testcol.g,testcol.b,testcol.a);
-            testcol.r += 10;
-        }
+    vector<ofColor> checkuv;
 
-        testcol.g += 10;
+    checkuv.push_back(ofColor::red);
+    checkuv.push_back(ofColor::blue);
+    checkuv.push_back(ofColor::green);
+    checkuv.push_back(ofColor::pink);
+    checkuv.push_back(ofColor::yellow);
+
+    for(uint16_t iface = 0;iface < 5; iface++) {
+        testcol = ofColor::blue;
+        //testcol = checkuv[iface];
+        for(uint32_t rtest = 0;rtest < div_grille;rtest++) {
+            for(uint32_t ctest = 0;ctest < div_grille;ctest++) {
+                grille[igr++].set(testcol.r,testcol.g,testcol.b,testcol.a);
+                testcol.r += 10;
+            }
+
+            testcol.g += 10;
+        }
     }
+
+
+
 
     this->majFaceDepuisGrille(top,FaceIndex::top,FillOrient::horz);
 
     this->majFaceDepuisGrille(front,FaceIndex::front,FillOrient::vertinvert);
 
 
-    //this->majFaceDepuisGrille(left,FaceIndex::left,FillOrient::horzinvert);
+    this->majFaceDepuisGrille(left,FaceIndex::left,FillOrient::horzinvert);
 
+    this->majFaceDepuisGrille(right,FaceIndex::right,FillOrient::vertinvert);
+
+    this->majFaceDepuisGrille(back,FaceIndex::back,FillOrient::vertinvert);
 }
 
 //--------------------------------------------------------------

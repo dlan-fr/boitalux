@@ -28,7 +28,9 @@ public:
 
 
     void remplirFace(ofRectangle face,ofColor color);
-    void majFaceDepuisGrille(ofRectangle face,FaceIndex index, FillOrient orient);
+    ofColor pickColor(float x,float y,uint32_t start_index,ofRectangle face,FillOrient orient);
+
+    void majFaceDepuisGrille(ofRectangle face,FaceIndex index,FillOrient orient);
 
     void initCube();
 
