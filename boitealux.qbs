@@ -19,7 +19,7 @@ Project{
         ]
 
         of.addons: [
-            'ofx3DModelLoader','ofxAssimpModelLoader'
+            'ofx3DModelLoader','ofxAssimpModelLoader','ofxFft'
         ]
 
         // additional flags for the project. the of module sets some

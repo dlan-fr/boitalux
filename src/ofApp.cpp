@@ -18,6 +18,18 @@ void ofApp::initCube() {
 
         }
     }
+
+     uint32_t igr = 0;
+    for(uint16_t iface = 0;iface < 5; iface++) {
+
+        //testcol = checkuv[iface];
+        for(uint32_t rtest = 0;rtest < div_grille;rtest++) {
+            for(uint32_t ctest = 0;ctest < div_grille;ctest++) {
+                grille[igr++].set(couleurbase.r,couleurbase.g,couleurbase.b,couleurbase.a);
+
+            }
+        }
+    }
 }
 
 void ofApp::remplirFace(ofRectangle face,ofColor color) {
@@ -103,6 +115,17 @@ void ofApp::majFaceDepuisGrille(ofRectangle face,FaceIndex index,FillOrient orie
 
 }
 
+void ofApp::updateGrille(FaceIndex index, int poscol,int fillval,ofColor colfill) {
+
+    uint32_t start_index = index * (div_grille * div_grille);
+
+
+    for(int f = 0; f < fillval;f++) {
+        uint32_t index = (start_index + poscol) + (f * div_grille);
+        grille[index] = colfill;
+    }
+}
+
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -177,7 +200,7 @@ void ofApp::setup(){
     uint32_t igr = 0;//total_face_grille * 2;
     ofColor testcol = ofColor::blue;
 
-    vector<ofColor> checkuv;
+   /* vector<ofColor> checkuv;
 
     checkuv.push_back(ofColor::red);
     checkuv.push_back(ofColor::blue);
@@ -197,20 +220,8 @@ void ofApp::setup(){
             testcol.g += 10;
         }
     }
+*/
 
-
-
-
-    this->majFaceDepuisGrille(top,FaceIndex::top,FillOrient::horz);
-
-    this->majFaceDepuisGrille(front,FaceIndex::front,FillOrient::vertinvert);
-
-
-    this->majFaceDepuisGrille(left,FaceIndex::left,FillOrient::horzinvert);
-
-    this->majFaceDepuisGrille(right,FaceIndex::right,FillOrient::vertinvert);
-
-    this->majFaceDepuisGrille(back,FaceIndex::back,FillOrient::vertinvert);
 }
 
 //--------------------------------------------------------------
@@ -226,6 +237,17 @@ void ofApp::update(){
     this->remplirFace(right,ofColor::pink);
 
     this->remplirFace(back,ofColor::yellow);*/
+
+    this->majFaceDepuisGrille(top,FaceIndex::top,FillOrient::horz);
+
+    this->majFaceDepuisGrille(front,FaceIndex::front,FillOrient::vertinvert);
+
+
+    this->majFaceDepuisGrille(left,FaceIndex::left,FillOrient::horzinvert);
+
+    this->majFaceDepuisGrille(right,FaceIndex::right,FillOrient::vertinvert);
+
+    this->majFaceDepuisGrille(back,FaceIndex::back,FillOrient::vertinvert);
 
     texture.loadData(texture_buffer);
     shmdata_copy_to_shm(writer,texture_buffer.getData(),texture_buffer.size());
@@ -251,12 +273,16 @@ void ofApp::draw(){
     ofSetColor(255,255,255);
 }
 
+int colval = 0;
+int fillval = 0;
+FaceIndex indx = FaceIndex::left;
+
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
     ofRectangle& mod = right;
 
-    switch(key) {
+    /*switch(key) {
             case OF_KEY_LEFT:
                 mod.setX(mod.x - 1);
             break;
@@ -283,8 +309,40 @@ void ofApp::keyPressed(int key){
             break;
 
 
-    }
+    }*/
 
+
+
+    switch(key) {
+                case OF_KEY_LEFT:
+                    colval--;
+                break;
+                case OF_KEY_RIGHT:
+                    colval++;
+                break;
+                case OF_KEY_UP:
+                    fillval++;
+                 break;
+                 case OF_KEY_DOWN:
+                   fillval--;
+                break;
+                case OF_KEY_F1:
+                    colval = 0;
+                    fillval = 0;
+                    break;
+
+               case 52:
+                    indx = (FaceIndex)((int)indx+1);
+               break;
+              case 54:
+                   indx = (FaceIndex)((int)indx-1);
+               break;
+
+
+        }
+
+    initCube();
+    this->updateGrille(indx,colval,fillval,ofColor::green);
 
 
 

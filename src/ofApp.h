@@ -32,6 +32,8 @@ public:
 
     void majFaceDepuisGrille(ofRectangle face,FaceIndex index,FillOrient orient);
 
+    void updateGrille(FaceIndex index, int poscol,int fillval,ofColor colfill);
+
     void initCube();
 
     //taille texture
