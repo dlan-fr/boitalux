@@ -200,7 +200,7 @@ void ofApp::setup(){
     uint32_t igr = 0;//total_face_grille * 2;
     ofColor testcol = ofColor::blue;
 
-   /* vector<ofColor> checkuv;
+    /*vector<ofColor> checkuv;
 
     checkuv.push_back(ofColor::red);
     checkuv.push_back(ofColor::blue);
@@ -222,6 +222,98 @@ void ofApp::setup(){
     }
 */
 
+
+    //initialisation fft et son
+
+    plotHeight = 128;
+    bufferSize = 2048;
+
+    fft = ofxFft::create(bufferSize, OF_FFT_WINDOW_HAMMING);
+
+    drawBins.resize(fft->getBinSize());
+    middleBins.resize(fft->getBinSize());
+    audioBins.resize(fft->getBinSize());
+
+    // 0 output channels,
+    // 1 input channel
+    // 44100 samples per second
+    // [bins] samples per buffer
+    // 4 num buffers (latency)
+
+    ofSoundStreamSetup(0, 1, this, 44100, bufferSize, 4);
+}
+
+void ofApp::audioIn(ofSoundBuffer &buffer)
+{
+    float maxValue = 0;
+    for(int i = 0; i < buffer.size(); i++) {
+        if(abs(buffer.getSample(i,1)) > maxValue) {
+            maxValue = abs(buffer.getSample(i,1));
+        }
+    }
+
+    std::vector<float>& input = buffer.getBuffer();
+
+
+    /*for(int i = 0; i < buffer.size(); i++) {
+        input[i] /= maxValue;
+    }*/
+
+    fft->setSignal(input);
+
+    float* curFft = fft->getAmplitude();
+    memcpy(&audioBins[0], curFft, sizeof(float) * fft->getBinSize());
+
+   /* maxValue = 0;
+    for(int i = 0; i < fft->getBinSize(); i++) {
+        if(abs(audioBins[i]) > maxValue) {
+            maxValue = abs(audioBins[i]);
+        }
+    }
+    for(int i = 0; i < fft->getBinSize(); i++) {
+        audioBins[i] /= maxValue;
+    }*/
+
+    soundMutex.lock();
+    middleBins = audioBins;
+    soundMutex.unlock();
+}
+
+void ofApp::plot(vector<float>& buffer, float scale)
+{
+    int n = buffer.size();
+
+    std::cout << "buffer " << n;
+
+    initCube();
+
+
+
+    for (int i = 0; i < total_face_grille; i++) {
+       // float val = buffer[i] * scale;
+
+        float prop = buffer[i] * scale;
+
+        int fillval = (int)(prop * div_grille);
+        //std::cout << "prop " << prop << " fillval " << fillval << std::endl;
+
+
+        if(i < 6) {
+            this->updateGrille(FaceIndex::left,i,fillval,ofColor::green);
+        }
+
+        if(i >=6 && i < 12) {
+            this->updateGrille(FaceIndex::front,i-6,fillval,ofColor::green);
+        }
+
+
+    }
+
+
+
+    /*for (int i = 0; i < n; i++) {
+       // ofVertex(i, sqrt(buffer[i]) * scale);
+    }*/
 }
 
 //--------------------------------------------------------------
@@ -237,6 +329,14 @@ void ofApp::update(){
     this->remplirFace(right,ofColor::pink);
 
     this->remplirFace(back,ofColor::yellow);*/
+
+    soundMutex.lock();
+    drawBins = middleBins;
+    soundMutex.unlock();
+    plot(drawBins, plotHeight);
+
+
+
 
     this->majFaceDepuisGrille(top,FaceIndex::top,FillOrient::horz);
 

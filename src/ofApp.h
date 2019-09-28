@@ -4,6 +4,7 @@
 #include "enum.h"
 #include <inttypes.h>
 #include "shmdata/cwriter.h"
+#include "ofxFft.h"
 
 class ofApp : public ofBaseApp{
 
@@ -35,6 +36,9 @@ public:
     void updateGrille(FaceIndex index, int poscol,int fillval,ofColor colfill);
 
     void initCube();
+
+    void plot(vector<float>& buffer, float scale);
+    void audioIn(ofSoundBuffer &buffer);
 
     //taille texture
     int32_t texture_width;
@@ -74,6 +78,15 @@ public:
     ofRectangle top;
     ofRectangle left;
     ofRectangle right;
+
+    //variable fft et son
+
+    int plotHeight, bufferSize;
+
+    ofxFft* fft;
+
+    ofMutex soundMutex;
+    vector<float> drawBins, middleBins, audioBins;
 
 
 };
