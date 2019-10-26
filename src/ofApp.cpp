@@ -142,7 +142,7 @@ void ofApp::setup(){
    texture_width = 1024;
    texture_height = 1024;
 
-   div_grille = 6;
+   div_grille = 48;
 
    //une grille 6*6 pour nos 5 face (pas de grille pour la face cachée)
    total_face_grille = (div_grille * div_grille);
@@ -228,7 +228,7 @@ void ofApp::setup(){
     plotHeight = 128;
     bufferSize = 2048;
 
-    fft = ofxFft::create(bufferSize, OF_FFT_WINDOW_HAMMING);
+    fft = ofxFft::create(bufferSize, OF_FFT_WINDOW_BARTLETT);
 
     drawBins.resize(fft->getBinSize());
     middleBins.resize(fft->getBinSize());
@@ -281,39 +281,56 @@ void ofApp::audioIn(ofSoundBuffer &buffer)
 
 void ofApp::plot(vector<float>& buffer, float scale)
 {
-    int n = buffer.size();
-
-    std::cout << "buffer " << n;
-
     initCube();
 
+    int grillefillmax = (div_grille * 4);
+
+    if(grillefillmax > buffer.size()) {
+        grillefillmax = buffer.size();
+    }
+
+    //pour répartir les samples sur l'ensemble des éléments de la grille
+    //TODO : prendre en compte la partie décimale pour intégrer l'ensemble des samples
+    //contenus dans le buffer (a tester 3/4 de la grille avec une agg de 5 et le reste avec une agg de 6)
+    int agregate = buffer.size() / grillefillmax;
 
 
-    for (int i = 0; i < total_face_grille; i++) {
-       // float val = buffer[i] * scale;
 
-        float prop = buffer[i] * scale;
+    for (int i = 0; i < grillefillmax; i++) {
+
+        float acc = 0;
+
+        for(int iacc = 0;iacc < agregate;iacc++) {
+            acc += buffer[i+acc];
+        }
+
+        float prop = (acc / agregate) * scale;
 
         int fillval = (int)(prop * div_grille);
-        //std::cout << "prop " << prop << " fillval " << fillval << std::endl;
+
+        if(fillval > div_grille) {
+            fillval = div_grille;
+        }
 
 
-        if(i < 6) {
+        if(i < div_grille) {
             this->updateGrille(FaceIndex::left,i,fillval,ofColor::green);
         }
 
-        if(i >=6 && i < 12) {
-            this->updateGrille(FaceIndex::front,i-6,fillval,ofColor::green);
+        if(i >=div_grille && i < (div_grille + div_grille)) {
+            this->updateGrille(FaceIndex::front,i-div_grille,fillval,ofColor::blueSteel);
+        }
+
+        if(i >= (div_grille * 2) && i < (div_grille * 2) + div_grille) {
+            this->updateGrille(FaceIndex::top,i-(div_grille*2),fillval,ofColor::red);
+        }
+
+        if(i >= (div_grille * 3) && i < (div_grille * 3) + div_grille) {
+             this->updateGrille(FaceIndex::back,i-(div_grille*3),fillval,ofColor::yellow);
         }
 
 
     }
-
-
-
-    /*for (int i = 0; i < n; i++) {
-       // ofVertex(i, sqrt(buffer[i]) * scale);
-    }*/
 }
 
 //--------------------------------------------------------------

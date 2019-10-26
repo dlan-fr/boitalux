@@ -1,0 +1,5 @@
+toujours lancer l'appli openframework avant splash ( solution bancale pour le moment, a terme, recompiler splash sans portaudio / sans audio)
+
+pour les conflit audio, voir : 
+
+https://stackoverflow.com/questions/6400950/how-can-i-solve-a-conflict-between-openframeworks-and-other-audio-applications
