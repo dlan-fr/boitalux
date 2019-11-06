@@ -1,0 +1,271 @@
+
+// Splash configuration file
+// Exported with Blender Splash add-on
+{
+   "GPU" : {
+      "BackCam" : {
+         "16bits" : [ 1 ],
+         "activateColorLUT" : [ 0 ],
+         "blendPrecision" : [ 0.10000000149011612 ],
+         "blendWidth" : [ 0.05000000074505806 ],
+         "brightness" : [ 1 ],
+         "calibrationPoints" : [
+            [ 1, 0.99999898672103882, 2.0061399936676025, 0, 0, 0 ],
+            [ -1, 1, 2.0061399936676025, 0, 0, 0 ],
+            [ -1, -1, 2.0061399936676025, 0, 0, 0 ],
+            [ 1, 1, 0.0061400001868605614, 0, 0, 0 ],
+            [ -1, 1, 0.0061400001868605614, 0, 0, 0 ],
+            [ -1, -1, 0.0061400001868605614, 0, 0, 0 ],
+            [ -1, 1, 1.0061399936676025, 0, 0, 0 ]
+         ],
+         "colorMixMatrix" : [
+            [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ]
+         ],
+         "colorTemperature" : [ 6500 ],
+         "eye" : [ -5.785550594329834, 6.9495062828063965, 0.24016523361206055 ],
+         "fov" : [ 17.171499252319336 ],
+         "getReprojectionError" : [ 0 ],
+         "multisampling" : [ 0 ],
+         "principalPoint" : [ 0.5, 0.5 ],
+         "priorityShift" : [ 0 ],
+         "size" : [ 1920, 1200 ],
+         "target" : [ -5.2009429931640625, 6.2770261764526367, 0.32825231552124023 ],
+         "type" : "camera",
+         "up" : [ -0.028129294514656067, 0.033601488918066025, 0.44320836663246155 ],
+         "weightedCalibrationPoints" : [ 1 ]
+      },
+      "FrontCam" : {
+         "16bits" : [ 1 ],
+         "activateColorLUT" : [ 0 ],
+         "blendPrecision" : [ 0.10000000149011612 ],
+         "blendWidth" : [ 0.05000000074505806 ],
+         "brightness" : [ 1 ],
+         "calibrationPoints" : [
+            [ 0.99999898672103882, -1.0000009536743164, 2.0061399936676025, 0, 0, 0 ],
+            [ 1, 1, 0.0061400001868605614, 0, 0, 0 ],
+            [ 1, -1, 0.0061400001868605614, 0, 0, 0 ],
+            [ -1, -1, 2.0061399936676025, 0, 0, 0 ],
+            [ 1, 0.99999898672103882, 2.0061399936676025, 0, 0, 0 ],
+            [ -1, 1, 2.0061399936676025, 0, 0, 0 ],
+            [ -1, -1, 0.0061400001868605614, 0, 0, 0 ]
+         ],
+         "colorMixMatrix" : [
+            [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ]
+         ],
+         "colorTemperature" : [ 6500 ],
+         "eye" : [ 6.4879403114318848, -5.9282937049865723, 5.2452960014343262 ],
+         "fov" : [ 18.570030212402344 ],
+         "getReprojectionError" : [ 0 ],
+         "multisampling" : [ 0 ],
+         "principalPoint" : [ 0.5, 0.5 ],
+         "priorityShift" : [ 0 ],
+         "size" : [ 1920, 1080 ],
+         "target" : [ 5.8363819122314453, -5.3141231536865234, 4.8000245094299316 ],
+         "type" : "camera",
+         "up" : [ 0, 0, 1 ],
+         "weightedCalibrationPoints" : [ 1 ]
+      },
+      "Gui window" : {
+         "decorated" : [ 1 ],
+         "fullscreen" : [ -1 ],
+         "gamma" : [ 2.2000000476837158 ],
+         "layout" : [ 0, 0, 0, 0 ],
+         "position" : [ 0, 0 ],
+         "priorityShift" : [ 0 ],
+         "size" : [ 732, 932 ],
+         "srgb" : [ 1 ],
+         "type" : "window"
+      },
+      "Image" : {
+         "file" : [ "socket" ],
+         "flip" : [ 0 ],
+         "flop" : [ 0 ],
+         "pattern" : [ 0 ],
+         "priorityShift" : [ 0 ],
+         "srgb" : [ 1 ],
+         "type" : "image_shmdata"
+      },
+      "Mesh" : {
+         "file" : [ "splash_Cube.obj" ],
+         "priorityShift" : [ 0 ],
+         "type" : "mesh"
+      },
+      "Object" : {
+         "fill" : [ "wireframe" ],
+         "normalExponent" : [ 0 ],
+         "position" : [ 0, 0, 0 ],
+         "priorityShift" : [ 0 ],
+         "rotation" : [ 0, 0, 0 ],
+         "scale" : [ 1, 1, 1 ],
+         "sideness" : [ 0 ],
+         "type" : "object"
+      },
+      "Object_Image_filter" : {
+         "blackLevel" : [ 0 ],
+         "blackLevelAuto" : [ 0, 0.019999999552965164 ],
+         "brightness" : [ 1 ],
+         "colorCurveAnchors" : [ 0 ],
+         "colorTemperature" : [ 6500 ],
+         "contrast" : [ 1 ],
+         "fileFilterSource" : [ "" ],
+         "filterSource" : [ "" ],
+         "invertChannels" : [ 0 ],
+         "keepRatio" : [ 0 ],
+         "priorityShift" : [ 0 ],
+         "saturation" : [ 1 ],
+         "size" : [ 128, 128 ],
+         "sizeOverride" : [ -1, -1 ],
+         "type" : "filter"
+      },
+      "Window" : {
+         "decorated" : [ 0 ],
+         "fullscreen" : [ -1 ],
+         "gamma" : [ 2.2000000476837158 ],
+         "layout" : [ 0, 0, 0, 0 ],
+         "position" : [ 1920, 0 ],
+         "priorityShift" : [ 0 ],
+         "size" : [ 1920, 1080 ],
+         "srgb" : [ 1 ],
+         "type" : "window"
+      },
+      "Window.001" : {
+         "decorated" : [ 0 ],
+         "fullscreen" : [ -1 ],
+         "gamma" : [ 2.2000000476837158 ],
+         "layout" : [ 0, 0, 0, 0 ],
+         "position" : [ 3840, 0 ],
+         "priorityShift" : [ 0 ],
+         "size" : [ 1920, 1200 ],
+         "srgb" : [ 1 ],
+         "type" : "window"
+      },
+      "Window.001_BackCam_warp" : {
+         "patchControl" : [
+            4,
+            4,
+            [ -1, -1 ],
+            [ -0.33333331346511841, -1 ],
+            [ 0.33333337306976318, -1 ],
+            [ 1, -1 ],
+            [ -1, -0.33333331346511841 ],
+            [ -0.33333331346511841, -0.33333331346511841 ],
+            [ 0.33333337306976318, -0.33333331346511841 ],
+            [ 1, -0.33333331346511841 ],
+            [ -1, 0.33333337306976318 ],
+            [ -0.33333331346511841, 0.33333337306976318 ],
+            [ 0.33333337306976318, 0.33333337306976318 ],
+            [ 1, 0.33333337306976318 ],
+            [ -1, 1 ],
+            [ -0.33333331346511841, 1 ],
+            [ 0.33333337306976318, 1 ],
+            [ 1, 1 ]
+         ],
+         "patchResolution" : [ 64 ],
+         "patchSize" : [ 4, 4 ],
+         "priorityShift" : [ 0 ],
+         "size" : [ 1920, 1200 ],
+         "type" : "warp"
+      },
+      "Window_FrontCam_warp" : {
+         "patchControl" : [
+            4,
+            4,
+            [ -1, -1 ],
+            [ -0.33333331346511841, -1 ],
+            [ 0.33333337306976318, -1 ],
+            [ 1, -1 ],
+            [ -1, -0.33333331346511841 ],
+            [ -0.33333331346511841, -0.33333331346511841 ],
+            [ 0.33333337306976318, -0.33333331346511841 ],
+            [ 1, -0.33333331346511841 ],
+            [ -1, 0.33333337306976318 ],
+            [ -0.33333331346511841, 0.33333337306976318 ],
+            [ 0.33333337306976318, 0.33333337306976318 ],
+            [ 1, 0.33333337306976318 ],
+            [ -1, 1 ],
+            [ -0.33333331346511841, 1 ],
+            [ 0.33333337306976318, 1 ],
+            [ 1, 1 ]
+         ],
+         "patchResolution" : [ 64 ],
+         "patchSize" : [ 4, 4 ],
+         "priorityShift" : [ 0 ],
+         "size" : [ 1920, 1080 ],
+         "type" : "warp"
+      },
+      "blender" : {
+         "mode" : [ "none" ],
+         "priorityShift" : [ 0 ],
+         "type" : "blender"
+      },
+      "colorCalibrator" : {
+         "colorSamples" : [ 5 ],
+         "detectionThresholdFactor" : [ 1 ],
+         "equalizeMethod" : [ 2 ],
+         "hdrStep" : [ 1 ],
+         "imagePerHDR" : [ 1 ],
+         "priorityShift" : [ 0 ],
+         "type" : "colorCalibrator"
+      },
+      "dragndrop" : {
+         "priorityShift" : [ 0 ],
+         "type" : "dragndrop",
+         "updateRate" : [ 10 ]
+      },
+      "gui" : {
+         "priorityShift" : [ 0 ],
+         "type" : "gui"
+      },
+      "joystick" : {
+         "priorityShift" : [ 0 ],
+         "type" : "joystick",
+         "updateRate" : [ 100 ]
+      },
+      "keyboard" : {
+         "priorityShift" : [ 0 ],
+         "type" : "keyboard",
+         "updateRate" : [ 100 ]
+      },
+      "links" : [
+         [ "BackCam", "Window.001_BackCam_warp" ],
+         [ "FrontCam", "Window_FrontCam_warp" ],
+         [ "BackCam", "Window.001" ],
+         [ "Window.001_BackCam_warp", "Window.001" ],
+         [ "FrontCam", "Window" ],
+         [ "Window_FrontCam_warp", "Window" ],
+         [ "Mesh", "Object" ],
+         [ "Image", "Object" ],
+         [ "Object_Image_filter", "Object" ],
+         [ "Object", "gui" ],
+         [ "Image", "Object_Image_filter" ],
+         [ "Object", "BackCam" ],
+         [ "gui", "Gui window" ],
+         [ "Object", "FrontCam" ]
+      ],
+      "mouse" : {
+         "priorityShift" : [ 0 ],
+         "type" : "mouse",
+         "updateRate" : [ 100 ]
+      }
+   },
+   "description" : "splashConfiguration",
+   "scenes" : [
+      {
+         "display" : 0,
+         "name" : "GPU",
+         "priorityShift" : [ 0 ],
+         "swapInterval" : [ 1 ],
+         "type" : "scene"
+      }
+   ],
+   "world" : {
+      "clockDeviceName" : [ "" ],
+      "configurationPath" : [ "/home/msipc/Projects/graph/boitealux/bin/data/" ],
+      "forceRealtime" : [ 0 ],
+      "framerate" : [ 60 ],
+      "looseClock" : [ 0 ],
+      "mediaPath" : [ "/home/msipc/Projects/graph/boitealux/bin/data/" ],
+      "priorityShift" : [ 0 ],
+      "type" : "world"
+   }
+}

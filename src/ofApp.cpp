@@ -322,11 +322,11 @@ void ofApp::plot(vector<float>& buffer, float scale)
         }
 
         if(i >= (div_grille * 2) && i < (div_grille * 2) + div_grille) {
-            this->updateGrille(FaceIndex::top,i-(div_grille*2),fillval,ofColor::red);
+            this->updateGrille(FaceIndex::right,i-(div_grille*2),fillval,ofColor::red);
         }
 
         if(i >= (div_grille * 3) && i < (div_grille * 3) + div_grille) {
-             this->updateGrille(FaceIndex::back,i-(div_grille*3),fillval,ofColor::yellow);
+             this->updateGrille(FaceIndex::back,i-(div_grille*3),fillval,ofColor::black);
         }
 
 
