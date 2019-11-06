@@ -32,14 +32,42 @@ void ofApp::initCube() {
     }
 }
 
-void ofApp::remplirFace(ofRectangle face,ofColor color) {
+void ofApp::remplirFace(ofRectangle face,ofColor color,FaceFill fill = FaceFill::full) {
 
-    for(float y = face.y;y < face.y + face.height;y++) {
+    float startx,endx = 0.0f;
+    float starty,endy = 0.0f;
 
-        for(float x =face.x; x < face.x + face.width;x++) {
+    if(fill == FaceFill::full) {
+        startx = face.x;
+        endx = face.x + face.width;
+        starty = face.y;
+        endy = face.y + face.height;
+    }
+    else if(fill == FaceFill::topleft) {
+        startx = face.x;
+        endx =face.x + (face.width * 0.5f);
+        starty = face.y;
+        endy = face.y + (face.height * 0.5f);
+    }
+    else if(fill == FaceFill::topright) {
+        startx = face.x + (face.width * 0.5f);
+        endx =face.x + face.width;
+        starty = face.y;
+        endy = face.y + (face.height * 0.5f);
+    }
+    else if(fill == FaceFill::bottomleft) {
+        startx = face.x;
+        endx =face.x + (face.width * 0.5f);
+        starty = face.y + (face.height * 0.5f);
+        endy = face.y + face.height;
+    }
+
+
+    for(float y = starty;y < endy;y++) {
+
+        for(float x =startx; x < endx;x++) {
             texture_buffer.setColor(x,y,color);
         }
-
     }
 
 
@@ -230,9 +258,12 @@ void ofApp::setup(){
 
     fft = ofxFft::create(bufferSize, OF_FFT_WINDOW_BARTLETT);
 
+    beat = new ofxBeat(bufferSize,512);
+
     drawBins.resize(fft->getBinSize());
     middleBins.resize(fft->getBinSize());
     audioBins.resize(fft->getBinSize());
+
 
     // 0 output channels,
     // 1 input channel
@@ -241,10 +272,18 @@ void ofApp::setup(){
     // 4 num buffers (latency)
 
     ofSoundStreamSetup(0, 1, this, 44100, bufferSize, 4);
+
+    //configuration détection beat
+    storedkick = 0.0f;
+    storedsnare = 0.0f;
+    treshkick = 0.8f;
+    treshsnare = 0.3f;
 }
 
 void ofApp::audioIn(ofSoundBuffer &buffer)
 {
+
+
     float maxValue = 0;
     for(int i = 0; i < buffer.size(); i++) {
         if(abs(buffer.getSample(i,1)) > maxValue) {
@@ -253,6 +292,10 @@ void ofApp::audioIn(ofSoundBuffer &buffer)
     }
 
     std::vector<float>& input = buffer.getBuffer();
+
+    const float* input_const = &input[0];
+
+     beat->audioReceived(input_const,input.size(),buffer.getNumChannels());
 
 
     /*for(int i = 0; i < buffer.size(); i++) {
@@ -296,6 +339,8 @@ void ofApp::plot(vector<float>& buffer, float scale)
 
 
 
+    ofColor graphcolor = ofColor::blueSteel;
+
     for (int i = 0; i < grillefillmax; i++) {
 
         float acc = 0;
@@ -314,27 +359,79 @@ void ofApp::plot(vector<float>& buffer, float scale)
 
 
         if(i < div_grille) {
-            this->updateGrille(FaceIndex::left,i,fillval,ofColor::green);
+            this->updateGrille(FaceIndex::left,i,fillval,graphcolor);
         }
 
         if(i >=div_grille && i < (div_grille + div_grille)) {
-            this->updateGrille(FaceIndex::front,i-div_grille,fillval,ofColor::blueSteel);
+            this->updateGrille(FaceIndex::front,i-div_grille,fillval,graphcolor);
         }
 
         if(i >= (div_grille * 2) && i < (div_grille * 2) + div_grille) {
-            this->updateGrille(FaceIndex::right,i-(div_grille*2),fillval,ofColor::red);
+            this->updateGrille(FaceIndex::right,i-(div_grille*2),fillval,graphcolor);
         }
 
         if(i >= (div_grille * 3) && i < (div_grille * 3) + div_grille) {
-             this->updateGrille(FaceIndex::back,i-(div_grille*3),fillval,ofColor::black);
+             this->updateGrille(FaceIndex::back,i-(div_grille*3),fillval,graphcolor);
         }
 
 
     }
+
+
+    //maj face du dessus à partir du beat détecté
+    float kick = beat->kick();
+    float snare = beat->snare();
+    float hihat = beat->hihat();
+
+    ofColor snarecolor = ofColor::red;
+
+    snarecolor.setSaturation(snare * 255);
+    this->remplirFace(top,snarecolor,FaceFill::topleft);
+
+    ofColor kickcolor = ofColor::black;
+    kickcolor.setBrightness(255 - (255 * kick));
+    this->remplirFace(top,kickcolor,FaceFill::topright);
+
+    ofColor hihatcolor = ofColor::gold;
+    hihatcolor.setSaturation(hihat * 255);
+    this->remplirFace(top,hihatcolor,FaceFill::bottomleft);
+
+
+    /*if(snare > storedsnare && snare > treshsnare) {
+        storedsnare = snare;
+
+    }
+
+    if(storedsnare > 0.0f) {
+        snarecolor.setSaturation(storedsnare * 255);
+        this->remplirFace(top,snarecolor);
+    }
+    else {
+        this->remplirFace(top,ofColor::white);
+    }*/
+
+   /* if(kick >= 0.05f || snare >= 0.05f) {
+        std::cout << "kick : " << kick << std::endl;
+        std::cout << "snare : " << snare << std::endl;
+    }*/
+
+
+    /*if(kick >= 0.005f || snare >= 0.005f) {
+        this->remplirFace(top,ofColor::red);
+    }
+    else {
+        this->remplirFace(top,ofColor::white);
+    }*/
+
+
+
+
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+
+    beat->update(ofGetElapsedTimeMillis());
 
     /*initCube();
 
@@ -352,10 +449,18 @@ void ofApp::update(){
     soundMutex.unlock();
     plot(drawBins, plotHeight);
 
+    if(storedsnare > 0.0f) {
+        storedsnare -= 0.2f;
+
+        if(storedsnare < 0.0f) {
+            storedsnare = 0.0f;
+        }
+    }
 
 
 
-    this->majFaceDepuisGrille(top,FaceIndex::top,FillOrient::horz);
+
+    //this->majFaceDepuisGrille(top,FaceIndex::top,FillOrient::horz);
 
     this->majFaceDepuisGrille(front,FaceIndex::front,FillOrient::vertinvert);
 
@@ -509,6 +614,7 @@ void ofApp::windowResized(int w, int h){
 void ofApp::exit() {
     shmdata_delete_logger(logger);
     shmdata_delete_writer(writer);
+    delete beat;
 }
 
 //--------------------------------------------------------------

@@ -5,6 +5,7 @@
 #include <inttypes.h>
 #include "shmdata/cwriter.h"
 #include "ofxFft.h"
+#include "ofxBeat.h"
 
 class ofApp : public ofBaseApp{
 
@@ -28,7 +29,7 @@ public:
     void gotMessage(ofMessage msg);
 
 
-    void remplirFace(ofRectangle face,ofColor color);
+    void remplirFace(ofRectangle face,ofColor color,FaceFill fill);
     ofColor pickColor(float x,float y,uint32_t start_index,ofRectangle face,FillOrient orient);
 
     void majFaceDepuisGrille(ofRectangle face,FaceIndex index,FillOrient orient);
@@ -88,5 +89,12 @@ public:
     ofMutex soundMutex;
     vector<float> drawBins, middleBins, audioBins;
 
+    ofxBeat* beat;
+
+    float storedsnare;
+    float storedkick;
+
+    float treshsnare;
+    float treshkick;
 
 };

@@ -7,4 +7,6 @@ enum FaceIndex { top = 0,front = 1,left = 2,right = 3, back = 4 };
 
 enum FillOrient { horz, vert, horzinvert,vertinvert };
 
+enum FaceFill { topleft,topright,bottomleft,bottomright,full};
+
 #endif // ENUM_H
