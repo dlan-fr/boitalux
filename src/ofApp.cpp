@@ -253,16 +253,39 @@ void ofApp::setup(){
 
     //initialisation fft et son
 
-    plotHeight = 128;
+    plotHeight = 16;
     bufferSize = 2048;
 
     fft = ofxFft::create(bufferSize, OF_FFT_WINDOW_BARTLETT);
 
     beat = new ofxBeat(bufferSize,512);
 
+    beat->setBeatValue();
+
     drawBins.resize(fft->getBinSize());
     middleBins.resize(fft->getBinSize());
     audioBins.resize(fft->getBinSize());
+
+    //liste des sortie et entrée audio disponibles pour openframework
+
+   // std::vector<ofSoundDevice> listdevices = ofSoundStreamListDevices();
+
+    ofSoundStreamSettings settings;
+
+
+    //std::cout << "Liste des devices" << std::endl;
+
+    //soundStream.printDeviceList();
+
+
+    /*for(std::vector<ofSoundDevice>::iterator it = listdevices.begin(); it != listdevices.end(); ++it) {
+        if(it->name.find("QUAD-CAPTURE") != std::string::npos) {
+            settings.setInDevice((*it));
+            ofSoundStream.setDevice((*it));
+            std::cout << "Carte Son trouvée !" << std::endl;
+        }
+        //std::cout << it->name << std::endl;
+    }*/
 
 
     // 0 output channels,
@@ -270,8 +293,31 @@ void ofApp::setup(){
     // 44100 samples per second
     // [bins] samples per buffer
     // 4 num buffers (latency)
+   // settings.setApi(ofSoundDevice::Api::PULSE);
+    settings.bufferSize = bufferSize;
+    settings.sampleRate = 44100;
+    settings.numBuffers = 4;
+    settings.numOutputChannels = 0;
+    settings.numInputChannels = 1;
+    settings.setInListener(this);
 
-    ofSoundStreamSetup(0, 1, this, 44100, bufferSize, 4);
+    auto devices = soundStream.getMatchingDevices("QUAD-CAPTURE");
+
+    if(!devices.empty()){
+            settings.setInDevice(devices[0]);
+            std::cout << "Carte Son trouvée : " << devices[0].name <<std::endl;
+            //soundStream.setDevice(devices[0]);
+            //soundStream.setDeviceID(devices[0].deviceID);
+     }
+
+    soundStream.setup(settings);
+
+   // soundStream.start();
+
+
+   // ofSoundStreamSetup(settings);
+
+
 
     //configuration détection beat
     storedkick = 0.0f;
@@ -285,11 +331,16 @@ void ofApp::audioIn(ofSoundBuffer &buffer)
 
 
     float maxValue = 0;
+
+    //std::cout << "max value : " << maxValue << std::endl;
+
     for(int i = 0; i < buffer.size(); i++) {
         if(abs(buffer.getSample(i,1)) > maxValue) {
             maxValue = abs(buffer.getSample(i,1));
         }
     }
+
+    //std::cout << "max value 2 : " << maxValue << std::endl;
 
     std::vector<float>& input = buffer.getBuffer();
 

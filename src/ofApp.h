@@ -81,6 +81,7 @@ public:
     ofRectangle right;
 
     //variable fft et son
+    ofSoundStream soundStream;
 
     int plotHeight, bufferSize;
 
